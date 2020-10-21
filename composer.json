@@ -1,5 +1,5 @@
 {
-    "name": "omnipay/omnipay-firstdata",
+    "name": "nmc9/omnipay-firstdata",
     "type": "library",
     "description": "First Data driver for the Omnipay payment processing library that includes ACH",
     "keywords": [
