@@ -27,7 +27,7 @@ class PayeezyAchGatewayTest extends GatewayTestCase
         $this->options = array(
             'amount' => '13.00',
             'ach' => $this->getValidAch(),
-            'transactionId' => 'order2',
+            'transactionId' => '12345',
             'currency' => 'USD',
             'testMode' => true,
         );
@@ -42,7 +42,10 @@ class PayeezyAchGatewayTest extends GatewayTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertEquals('ET173315::4549770020', $response->getTransactionReference());
+        $this->assertEquals('12345', $response->getTransactionId());
+        $this->assertEquals('ET173315',$response->getAuthorizationNumber());
         $this->assertEquals('000027', $response->getSequenceNo());
+
         $this->assertEmpty($response->getCardReference());
     }
 
@@ -55,6 +58,9 @@ class PayeezyAchGatewayTest extends GatewayTestCase
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertEquals('ET173315::4549770020', $response->getTransactionReference());
+        $this->assertEquals('12345', $response->getTransactionId());
+        $this->assertEquals('ET173315',$response->getAuthorizationNumber());
+        $this->assertEquals('000027', $response->getSequenceNo());
     }
 
     public function testPurchaseFailureMissingAmount(){

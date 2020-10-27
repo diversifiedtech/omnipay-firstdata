@@ -51,11 +51,12 @@ class DemoPayeezyAchGatewayTest extends TestCase
 
         $this->assertTrue($response->isSuccessful());
 
-        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNull($response->getCardReference());
 
+        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNotNull($response->getTransactionTag());
         $this->assertNotNull($response->getTransactionReference());
+        $this->assertEquals("12345",$response->getTransactionId());
         $this->assertNotNull($response->getSequenceNo());
 
         $this->assertEquals($response->getCode(),"00");
@@ -76,25 +77,6 @@ class DemoPayeezyAchGatewayTest extends TestCase
 
     public function test_ach_purchase_with_additional_fields()
     {
-
- // * * checkType
- // * * accountNumber
- // * * routingNumber
- // * * checkNumber
- // * * customerIDType ->
- // * * license ->
- // * * licenseState ->
- // * * ssn ->
- // * * taxId ->
- // * * militaryId ->
- // *
- // * * customer ->
- // * * ecommerceFlag ->
- // * * releaseType ->
- // * * vip ->
- // * * clerk ->
- // * * device ->
- // * * micr  ->
         $ach = new Ach([
             'firstName'            => 'Example',
             'lastName'             => 'Customer',
@@ -195,11 +177,13 @@ class DemoPayeezyAchGatewayTest extends TestCase
 
         $this->assertTrue($response->isSuccessful());
 
-        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNull($response->getCardReference());
 
+        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNotNull($response->getTransactionTag());
         $this->assertNotNull($response->getTransactionReference());
+        $this->assertEquals("12345",$response->getTransactionId());
+
         $this->assertNotNull($response->getSequenceNo());
 
         $this->assertEquals($response->getCode(),"00");

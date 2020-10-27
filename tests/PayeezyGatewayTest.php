@@ -46,8 +46,12 @@ class PayeezyGatewayTest extends GatewayTestCase
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
+
         $this->assertEquals('ET181147::28513493', $response->getTransactionReference());
+        $this->assertEquals('order2', $response->getTransactionId());
+        $this->assertEquals('ET181147',$response->getAuthorizationNumber());
         $this->assertEquals('000056', $response->getSequenceNo());
+
         $this->assertEmpty($response->getCardReference());
     }
 
@@ -59,7 +63,11 @@ class PayeezyGatewayTest extends GatewayTestCase
 
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
+
         $this->assertEquals('ET181147::28513493', $response->getTransactionReference());
+        $this->assertEquals('order2', $response->getTransactionId());
+        $this->assertEquals('ET181147',$response->getAuthorizationNumber());
+        $this->assertEquals('000056', $response->getSequenceNo());
     }
 
     public function testPurchaseFailureMissingAmount(){

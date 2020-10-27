@@ -50,11 +50,12 @@ class DemoPayeezyGatewayTest extends TestCase
 
         $this->assertTrue($response->isSuccessful());
 
-        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNull($response->getCardReference());
 
+        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNotNull($response->getTransactionTag());
         $this->assertNotNull($response->getTransactionReference());
+        $this->assertEquals("12345",$response->getTransactionId());
         $this->assertNotNull($response->getSequenceNo());
 
         $this->assertEquals($response->getCode(),"00");
@@ -98,11 +99,12 @@ class DemoPayeezyGatewayTest extends TestCase
 
         $this->assertTrue($response->isSuccessful());
 
-        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNull($response->getCardReference());
 
+        $this->assertNotNull($response->getAuthorizationNumber());
         $this->assertNotNull($response->getTransactionTag());
         $this->assertNotNull($response->getTransactionReference());
+        $this->assertEquals("12345",$response->getTransactionId());
         $this->assertNotNull($response->getSequenceNo());
 
         $this->assertEquals($response->getCode(),"00");
@@ -238,5 +240,46 @@ class DemoPayeezyGatewayTest extends TestCase
         $this->assertEquals($response->getBankCode(),"605");
         $this->assertEquals($response->getExactMessage(),"Transaction Normal");
         $this->assertEquals($response->getBankMessage(),"Invalid Expiration Date");
+    }
+
+        /**
+     * Everything was successful
+     */
+    public function test_purchase_without_reference_no()
+    {
+        $card = new CreditCard([
+            'firstName'            => 'Example',
+            'lastName'             => 'Customer',
+            'number'               => '4111111111111111',
+            'expiryMonth'          => '12',
+            'expiryYear'           => '2026',
+            'cvv'                  => '123',
+        ]);
+
+        $response = $this->gateway->purchase([
+            'description'              => 'Your order for widgets',
+            'amount'                   => '10.00',
+            'clientIp'                 => "1.2.3.4",
+            'card'                     => $card,
+        ])->send();
+
+        $this->assertTrue($response->isSuccessful());
+
+        $this->assertNull($response->getCardReference());
+
+        $this->assertNotNull($response->getAuthorizationNumber());
+        $this->assertNotNull($response->getTransactionTag());
+        $this->assertNotNull($response->getTransactionReference());
+        $this->assertNull($response->getTransactionId());
+        $this->assertNotNull($response->getSequenceNo());
+
+        $this->assertEquals($response->getCode(),"00");
+        $this->assertEquals($response->getMessage(),"Approved");
+        $this->assertEquals($response->getBankCode(),"100");
+        $this->assertEquals($response->getExactMessage(),"Transaction Normal");
+        $this->assertEquals($response->getBankMessage(),"Approved");
+
+        $this->assertEquals($response->getCardType(),"Visa");
+        $this->assertEquals($response->getCardNumber(),"############1111");
     }
 }
